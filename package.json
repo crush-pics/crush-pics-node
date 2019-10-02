@@ -1,0 +1,24 @@
+{
+  "name": "crush-pics",
+  "version": "0.1.0",
+  "main": "dist/crush-pics.js",
+  "homepage": "https://github.com/crush-pics/crush-pics-node",
+  "dependencies": {
+    "q": ">=1.0.1"
+  },
+  "keywords": [
+    "crush.pics",
+    "compression",
+    "optimisation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crush-pics/crush-pics-node.git"
+  },
+  "directories": {
+    "dist": "./dist"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}
