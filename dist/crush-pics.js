@@ -1,5 +1,5 @@
 /*!
- * Crush.pics 0.1.0
+ * Crush.pics 0.2.0
  * Licensed under MIT, https://opensource.org/licenses/MIT/
  * Please visit https://docs.crush.pics for details.
  */
@@ -14,7 +14,7 @@ CrushPics._env = {
   host: 'api.crush.pics',
   apiPath: '/v1',
   timeout: 40000,
-  clientVersion: 'v0.1.0',
+  clientVersion: 'v0.2.0',
   port: 443,
   api_token: '',
 };

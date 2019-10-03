@@ -1,6 +1,6 @@
 {
   "name": "@crush-pics/crush-pics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/crush-pics.js",
   "homepage": "https://github.com/crush-pics/crush-pics-node",
   "dependencies": {
