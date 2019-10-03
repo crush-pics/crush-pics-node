@@ -33,7 +33,8 @@ function RequestWrapper(args, apiCall) {
     this.args = args;
     this.httpHeaders = {};
     this.apiCall = apiCall;
-    if (this.apiCall.hasIdInUrl) {
+
+    if (this.apiCall.urlPath.includes(":id")) {
         validateIdParam(this.args[0]);
     }
 }
@@ -56,8 +57,14 @@ RequestWrapper.prototype.request = function(callBack, envOptions) {
     }
 
     var deferred = CrushPics._util.createDeferred(callBack);
-    var urlIdParam = this.apiCall.hasIdInUrl ? this.args[0] : null;
-    var params = this.apiCall.hasIdInUrl ? this.args[1] : this.args[0];
+
+    if (this.apiCall.urlPath.includes(":id")) {
+      var urlIdParam = this.args[0];
+      var params = this.args[1];
+    } else {
+      var urlIdParam = null;
+      var params = this.args[0];
+    }
 
     if (typeof callBack !== 'undefined' && !CrushPics._util.isFunction(callBack)) {
         throw new Error('The callback parameter passed is incorrect.');
@@ -70,7 +77,9 @@ RequestWrapper.prototype.request = function(callBack, envOptions) {
             deferred.resolve(response);
         }
     };
-    CrushPics._core.makeApiRequest(env, callBackWrapper, this.apiCall.httpMethod, this.apiCall.urlPrefix, this.apiCall.urlSuffix, urlIdParam, params, this.httpHeaders, this.apiCall.isListReq);
+
+    CrushPics._core.makeApiRequest(env, callBackWrapper, this.apiCall.httpMethod, this.apiCall.urlPath, urlIdParam, params, this.httpHeaders, this.apiCall.isListReq);
+
     return deferred.promise;
 };
 
@@ -129,8 +138,8 @@ CrushPics._core = (function() {
         };
     };
 
-    coreRef.makeApiRequest = function(env, callBack, httpMethod, urlPrefix, urlSuffix, urlIdParam, params, headers, isListReq) {
-        var path = getApiURL(env, urlPrefix, urlSuffix, urlIdParam);
+    coreRef.makeApiRequest = function(env, callBack, httpMethod, urlPath, urlIdParam, params, headers, isListReq) {
+        var path = getApiURL(env, urlPath, urlIdParam);
 
         if (typeof params === 'undefined' || params === null) {
             params = {};
@@ -173,12 +182,19 @@ CrushPics._core = (function() {
         req.end();
     };
 
-    function getApiURL(env, urlPrefix, urlSuffix, urlIdParam) {
+    function getApiURL(env, urlPath, urlIdParam) {
         if (typeof env.api_token === 'undefined') {
             throw new Error('Your api key is not configured.');
         }
-        return env.apiPath + urlPrefix + (urlIdParam !== null ? //
-            '/' + encodeURIComponent(urlIdParam).replace(/%2F/g,'/') : '') + (urlSuffix !== null ? urlSuffix : '');
+
+        var p = env.apiPath + urlPath;
+
+        if (urlIdParam !== null) {
+          var encId = encodeURIComponent(urlIdParam).replace(/%2F/g,'/');
+          p = p.replace(":id", encId);
+        }
+
+        return p;
     }
 
     var encodeListParams = function(paramObj) {
@@ -235,6 +251,7 @@ CrushPics._core = (function() {
 
         return serialized.join('&').replace(/%20/g, '+');
     };
+
     var throwError = function(callBack, type, httpStatusCode, errorCode, message, detail) {
         var error = {
             'message': message,
@@ -360,8 +377,8 @@ CrushPics._util = (function() {
         };
         return deferred;
     };
-    return util;
 
+    return util;
 }).call(this);
 
 (function() {
@@ -372,8 +389,6 @@ CrushPics._util = (function() {
           "get",
           "GET",
           "/dashboard",
-          null,
-          false
         ],
       ],
       "invoices": [
@@ -381,8 +396,6 @@ CrushPics._util = (function() {
           "list",
           "GET",
           "/invoices",
-          null,
-          false
         ],
       ],
       "account": [
@@ -390,52 +403,38 @@ CrushPics._util = (function() {
           "get",
           "GET",
           "/shop",
-          null,
-          false
         ],
         [
           "update",
           "PATCH",
           "/shop",
-          null,
-          false
         ],
       ],
       "original_images": [
         [
           "get",
           "GET",
-          "/original_images",
-          null,
-          true
+          "/original_images/:id",
         ],
         [
           "list",
           "GET",
           "/original_images",
-          null,
-          false
         ],
         [
           "create",
           "POST",
           "/original_images",
-          null,
-          false
         ],
         [
           "delete",
           "DELETE",
-          "/original_images",
-          null,
-          true
+          "/original_images/:id",
         ],
         [
           "compress",
           "POST",
           "/compress",
-          null,
-          false
         ],
       ],
       "callback_urls": [
@@ -443,22 +442,16 @@ CrushPics._util = (function() {
           "list",
           "GET",
           "/callback_urls",
-          null,
-          false
         ],
         [
           "create",
           "POST",
           "/callback_urls",
-          null,
-          false
         ],
         [
           "delete",
           "DELETE",
-          "/callback_urls",
-          null,
-          true
+          "/callback_urls/:id",
         ],
       ],
       "export": [
@@ -466,15 +459,11 @@ CrushPics._util = (function() {
           "get",
           "GET",
           "/export",
-          null,
-          false
         ],
         [
           "create",
           "POST",
           "/export",
-          null,
-          false
         ],
       ],
     }
@@ -486,9 +475,7 @@ CrushPics._util = (function() {
             var apiCall = {
                 "methodName": metaArr[0],
                 "httpMethod": metaArr[1],
-                "urlPrefix": metaArr[2],
-                "urlSuffix": metaArr[3],
-                "hasIdInUrl": metaArr[4],
+                "urlPath": metaArr[2],
                 "isListReq": metaArr[0] === "list"
             };
             module.exports[res][apiCall.methodName] = createApiFunc(apiCall);
