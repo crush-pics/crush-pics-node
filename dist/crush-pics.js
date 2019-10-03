@@ -78,7 +78,7 @@ RequestWrapper.prototype.request = function(callBack, envOptions) {
         }
     };
 
-    CrushPics._core.makeApiRequest(env, callBackWrapper, this.apiCall.httpMethod, this.apiCall.urlPath, urlIdParam, params, this.httpHeaders, this.apiCall.isListReq);
+    CrushPics._core.makeApiRequest(env, callBackWrapper, this.apiCall.httpMethod, this.apiCall.urlPath, urlIdParam, params, this.httpHeaders);
 
     return deferred.promise;
 };
@@ -138,15 +138,15 @@ CrushPics._core = (function() {
         };
     };
 
-    coreRef.makeApiRequest = function(env, callBack, httpMethod, urlPath, urlIdParam, params, headers, isListReq) {
+    coreRef.makeApiRequest = function(env, callBack, httpMethod, urlPath, urlIdParam, params, headers) {
         var path = getApiURL(env, urlPath, urlIdParam);
 
         if (typeof params === 'undefined' || params === null) {
             params = {};
         }
 
-        if (httpMethod === 'GET') {
-            var queryParam = isListReq ? encodeListParams(params) : encodeParams(params);
+        if (httpMethod === 'GET' && !CrushPics._util.isEmptyObject(params)) {
+            var queryParam = encodeParams(params);
             path += "?" + queryParam;
             params = {};
         }
@@ -476,7 +476,6 @@ CrushPics._util = (function() {
                 "methodName": metaArr[0],
                 "httpMethod": metaArr[1],
                 "urlPath": metaArr[2],
-                "isListReq": metaArr[0] === "list"
             };
             module.exports[res][apiCall.methodName] = createApiFunc(apiCall);
         }
