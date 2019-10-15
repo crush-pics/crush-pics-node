@@ -1,14 +1,26 @@
 const axios = require('axios')
-const config = require('./config/axiosConfig')
-const routes = require('./routes/routes')
-const formData = require('./utils/formData') 
+const config = require('./config/config')
+const routes = require('./config/routes')
+const formData = require('./utils/formData')
 const crushPics = {}
 
 crushPics.config = {...config}
 
-crushPics.configure = (token) => {
-  if (!token) throw new Error('token is required')
-  crushPics.config.headers.Authorization = `Bearer ${token}`
+crushPics.configure = (configuration) => {
+  Object.keys(configuration).forEach(property => {
+    switch (property) {
+    case 'api_token':
+      crushPics.config.headers.Authorization = `Bearer ${configuration[property]}`
+      break;
+    case 'baseUrl':
+      crushPics.config.url = configuration[property]
+      break;
+    default:
+      throw new Error('Unknown configuration')
+    }
+  })
+
+  if (!crushPics.config.headers.Authorization) throw new Error('token is required')
 }
 
 Object.keys(routes).forEach(el => {
@@ -19,24 +31,25 @@ Object.keys(routes).forEach(el => {
       'method': key[1],
       'path': key[2]
     }
+
     crushPics[el][apiCall.methodName] = (param) => {
-      let updatedConfig = {...config}
+      let updatedConfig = {...crushPics.config}
       updatedConfig.method = apiCall.method
       updatedConfig.url = updatedConfig.url + apiCall.path
-      updatedConfig.data = param ? JSON.stringify(param) : {}
-      
+
       if (apiCall.method === 'POST') {
-        const form = formData('./temp/minions-3.jpg') 
-        updatedConfig.data = form          
+        const form = formData('./img/minions-3.jpg')
+        updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
+      } else if (param) {
+        updatedConfig.data = JSON.stringify(param)
       }
 
       return axios(updatedConfig)
         .then(res => res.data)
         .catch(err => err)
-    }   
+    }
   })
 })
-
 
 module.exports = crushPics
