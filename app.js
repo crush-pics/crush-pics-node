@@ -18,12 +18,12 @@ crushPics.invoices
     .catch(err => console.log('app list err:', err))
 
 // compress img file
-// crushPics.original_images
-//   .compress({file: './img/minions-3.jpg'})
-//     .then(res => console.log('app compress file res:', res ,'\n'))
-//     .catch(err => console.log('app compress file err:', err))
+crushPics.original_images
+.compress({file: './img/minions-3.jpg'})
+.then(res => console.log('app compress file res:', res ,'\n'))
+.catch(err => console.log('app compress file err:', err))
 
-// // compress img link
+// compress img link
 crushPics.original_images
   .compress(
     {image_url: 'https://m.media-amazon.com/images/M/MV5BMTg2MTMyMzU0M15BMl5BanBnXkFtZTgwOTU3ODk4NTE@._V1_SY1000_CR0,0,674,1000_AL_.jpg'})

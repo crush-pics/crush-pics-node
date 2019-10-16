@@ -44,14 +44,15 @@ Object.keys(routes).forEach(el => {
         updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
       } else if (param) {
+        updatedConfig.headers['Content-Type'] = 'application/json'
         updatedConfig.data = {...param}
       }
 
       // test
-      axios.interceptors.request.use(req => {
-        console.log('start request', req, 'request END \n')
-        return req
-      })
+      // axios.interceptors.request.use(req => {
+      //   console.log('start request', req, 'request END \n')
+      //   return req
+      // })
       // test END
       
       return axios(updatedConfig)
