@@ -47,6 +47,13 @@ Object.keys(routes).forEach(el => {
         updatedConfig.data = {...param}
       }
 
+      // test
+      axios.interceptors.request.use(req => {
+        console.log('start request', req, 'request END \n')
+        return req
+      })
+      // test END
+      
       return axios(updatedConfig)
         .then(res => res.data)
         .catch(err => err)
