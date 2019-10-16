@@ -9,12 +9,12 @@ crushPics.config = {...config}
 crushPics.configure = (configuration) => {
   Object.keys(configuration).forEach(property => {
     switch (property) {
-    case 'api_token':
-      crushPics.config.headers.Authorization = `Bearer ${configuration[property]}`
-      break;
-    case 'baseUrl':
-      crushPics.config.url = configuration[property]
-      break;
+      case 'api_token':
+        crushPics.config.headers.Authorization = `Bearer ${configuration[property]}`
+        break;
+      case 'baseUrl':
+        crushPics.config.url = configuration[property]
+        break;
     default:
       throw new Error('Unknown configuration')
     }
@@ -37,12 +37,14 @@ Object.keys(routes).forEach(el => {
       updatedConfig.method = apiCall.method
       updatedConfig.url = updatedConfig.url + apiCall.path
 
-      if (apiCall.method === 'POST') {
-        const form = formData('./img/minions-3.jpg')
+      if (apiCall.method === 'POST' && 
+          apiCall.path === '/compress' && 
+          param.file) {
+        const form = formData(param.file)
         updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
       } else if (param) {
-        updatedConfig.data = JSON.stringify(param)
+        updatedConfig.data = {...param}
       }
 
       return axios(updatedConfig)
