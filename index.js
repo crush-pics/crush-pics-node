@@ -2,6 +2,7 @@ const axios = require('axios')
 const config = require('./config/config')
 const routes = require('./config/routes')
 const formData = require('./utils/formData')
+const validateIdParam = require('./utils/validateIdParam')
 const crushPics = {}
 
 crushPics.config = {...config}
@@ -40,7 +41,7 @@ Object.keys(routes).forEach(el => {
       if (apiCall.method === 'POST' && 
           apiCall.path === '/compress' && 
           param.file) {
-        const form = formData(param.file)
+        const form = formData(param)
         updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
       } else if (param) {
@@ -48,12 +49,17 @@ Object.keys(routes).forEach(el => {
         updatedConfig.data = {...param}
       }
 
-      // test
+      if (apiCall.path.includes(":id") && validateIdParam(param)) {
+        updatedConfig.url = updatedConfig.url.replace(":id", param)
+        delete updatedConfig.data
+      }
+
+      // // test
       // axios.interceptors.request.use(req => {
       //   console.log('start request', req, 'request END \n')
       //   return req
       // })
-      // test END
+      // // test END
       
       return axios(updatedConfig)
         .then(res => res.data)
