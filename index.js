@@ -32,15 +32,13 @@ Object.keys(routes).forEach(el => {
       'method': key[1],
       'path': key[2]
     }
-
     crushPics[el][apiCall.methodName] = (param) => {
       let updatedConfig = {...crushPics.config}
       updatedConfig.method = apiCall.method
       updatedConfig.url = updatedConfig.url + apiCall.path
-
       if (apiCall.method === 'POST' && 
-          apiCall.path === '/compress' && 
-          param.file) {
+        (apiCall.path === '/original_images' || apiCall.path === '/compress') && 
+        param.file) {
         const form = formData(param)
         updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
@@ -48,7 +46,7 @@ Object.keys(routes).forEach(el => {
         updatedConfig.headers['Content-Type'] = 'application/json'
         updatedConfig.data = {...param}
       }
-
+      
       if (apiCall.path.includes(":id") && validateIdParam(param)) {
         updatedConfig.url = updatedConfig.url.replace(":id", param)
         delete updatedConfig.data

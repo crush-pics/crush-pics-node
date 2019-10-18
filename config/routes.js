@@ -31,44 +31,39 @@ const routes = {
       "GET",
       "/original_images/:id",
     ],
-    // [
-    //   "list",
-    //   "GET",
-    //   "/original_images",
-    // ],
-    // [
-    //   "create",
-    //   "POST",
-    //   "/original_images",
-    // ],
-    // [
-    //   "delete",
-    //   "DELETE",
-    //   "/original_images/:id",
-    // ],
+    [
+      "list",
+      "GET",
+      "/original_images",
+    ],
+    [
+      "create",
+      "POST",
+      "/original_images",
+    ],
     [
       "compress",
       "POST",
       "/compress",
     ],
   ],
-  // "callback_urls": [
-  //   [
-  //     "list",
-  //     "GET",
-  //     "/callback_urls",
-  //   ],
-  //   [
-  //     "create",
-  //     "POST",
-  //     "/callback_urls",
-  //   ],
-  //   [
-  //     "delete",
-  //     "DELETE",
-  //     "/callback_urls/:id",
-  //   ],
-  // ],
+  "callback_urls": [
+    [
+      "list",
+      "GET",
+      "/callback_urls",
+    ],
+    [
+      "create",
+      "POST",
+      "/callback_urls",
+    ],
+    [
+      "delete",
+      "DELETE",
+      "/callback_urls/:id",
+    ],
+  ],
   "export": [
     [
       "get",
