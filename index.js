@@ -3,6 +3,7 @@ const config = require('./config/config')
 const routes = require('./config/routes')
 const formData = require('./utils/formData')
 const validateIdParam = require('./utils/validateIdParam')
+const pick = require('./utils/pick')
 const crushPics = {}
 
 crushPics.config = {...config}
@@ -60,7 +61,7 @@ Object.keys(routes).forEach(el => {
       // // test END
       
       return axios(updatedConfig)
-        .then(res => res.data)
+        .then(res => pick(res, ['status', 'data']))
         .catch(err => err)
     }
   })

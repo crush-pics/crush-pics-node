@@ -91,7 +91,7 @@ crushPics.account
 // account.update
 crushPics.account
   .update({compression_level_jpg: 70})
-    .then(res => console.log('app account update res:', res.shop.callback_urls ,'\n'))
+    .then(res => console.log('app account update res:', res ,'\n'))
     .catch(err => console.log('app account update err:', err))
 
 // // exports.create
