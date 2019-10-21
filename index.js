@@ -1,10 +1,16 @@
 const axios = require('axios')
-const config = require('./config/config')
+let config = {}
 const routes = require('./config/routes')
 const formData = require('./utils/formData')
 const validateIdParam = require('./utils/validateIdParam')
 const pick = require('./utils/pick')
 const crushPics = {}
+
+if (typeof window === 'undefined') {
+  config = require('./config/serverConfig')
+} else {
+  config = require('./config/clientConfig')
+}
 
 crushPics.config = {...config}
 
@@ -37,13 +43,28 @@ Object.keys(routes).forEach(el => {
       let updatedConfig = {...crushPics.config}
       updatedConfig.method = apiCall.method
       updatedConfig.url = updatedConfig.url + apiCall.path
-      if (apiCall.method === 'POST' && 
+      // post file from server
+      if (
+        typeof window === 'undefined' &&
+        apiCall.method === 'POST' && 
         (apiCall.path === '/original_images' || apiCall.path === '/compress') && 
         param.file) {
         const form = formData(param)
         updatedConfig.data = form
         updatedConfig.headers['Content-Type'] = form.formHeaders
-      } else if (param) {
+      }
+      // // post file from client
+      else if (
+        typeof window !== 'undefined' &&
+        apiCall.method === 'POST' && 
+        (apiCall.path === '/original_images' || apiCall.path === '/compress') && 
+        param.file) {
+        const formData = new FormData()
+        formData.append('file', param.file, param.file.name)
+        formData.append('origin', 'api')
+        updatedConfig.data = formData
+      } 
+      else if (param) {
         updatedConfig.headers['Content-Type'] = 'application/json'
         updatedConfig.data = {...param}
       }
