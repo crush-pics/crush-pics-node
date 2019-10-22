@@ -25,7 +25,7 @@ crushPics.invoices
 // original_images.create (img file)
 crushPics.original_images
   .create({
-    file: './img/minions-3.jpg'
+    file: './img/test.jpg'
   })
   .then(res => console.log('app compress file res:', res, '\n'))
   .catch(err => console.log('app compress file err:', err))
@@ -41,7 +41,7 @@ crushPics.original_images
 // original_images.compress (img file)
 crushPics.original_images
   .compress({
-    file: './img/minions-3.jpg',
+    file: './img/test.jpg',
     compression_level: 75,
     compression_type: "lossless",
   })
