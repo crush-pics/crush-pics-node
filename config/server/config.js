@@ -1,6 +1,6 @@
 const os = require('os')
 const clientVersion = 'v0.2.1'
-const baseUrl = 'https://apistaging.crush.pics/v1'
+const baseUrl = 'https://api.crush.pics/v1'
 
 const serverConfig = {
   url: baseUrl,

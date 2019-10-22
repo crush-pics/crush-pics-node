@@ -1,12 +1,12 @@
 {
   "name": "@crush-pics/crush-pics",
   "version": "0.2.1",
-  "description": "crushpics node module",
+  "description": "Crush.pics NodeJS Module",
   "main": "index.js",
   "homepage": "https://github.com/crush-pics/crush-pics-node",
   "scripts": {
-    "dev": "nodemon index.js",
-    "app": "nodemon app.js",
+    "dev": "node index.js",
+    "app": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,7 +14,7 @@
     "compression",
     "optimisation"
   ],
-  "author": "crush.pics dev team",
+  "author": "Crush.pics Dev Team",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/crush-pics/crush-pics-node/issues"
@@ -22,8 +22,5 @@
   "dependencies": {
     "axios": "^0.19.0",
     "form-data": "^2.5.1"
-  },
-  "devDependencies": {
-    "nodemon": "^1.19.4"
   }
 }
