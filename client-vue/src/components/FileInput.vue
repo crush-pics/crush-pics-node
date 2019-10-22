@@ -34,9 +34,8 @@ export default {
   name: 'FileInput',
   data() {
     return {
-      token:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbiI6ImlyaV9zaGthX3NAbWFpbC5ydSIsImVtYWlsIjpudWxsLCJwbGFuIjoiZnJlZSIsInRva2VuX2NyZWF0ZWRfYXQiOjE1NzEzMDY4ODYsInF1b3RhIjp7InRvdGFsX2J5dGVzIjoyNTAwMDAwMCwidXNlZF9ieXRlcyI6MH19.O5lxjPZpJM5hq7ApRcKyT_OLtcRa0liRsvG_Uv__E6Q',
-      url: 'https://apistaging.crush.pics/v1',
+      token: '',
+      url: 'https://api.crush.pics/v1',
       imgSrc: null
     }
   },
@@ -130,18 +129,6 @@ export default {
         .then(res => console.log('app callback_urls.list res:', res, '\n'))
         .catch(err => console.log('app callback_urls.list err:', err))
 
-      // // // callback_urls.create
-      // // crushPics.callback_urls
-      // //   .create({ "url": "https://test.com/webhook5" })
-      // //     .then(res => console.log('app callback_urls.create res:', res ,'\n'))
-      // //     .catch(err => console.log('app callback_urls.create err:', err))
-
-      // // // callback_urls.delete
-      // // crushPics.callback_urls
-      // //   .delete(49)
-      // //     .then(res => console.log('app callback_urls.delete res:', res ,'\n'))
-      // //     .catch(err => console.log('app callback_urls.delete err:', err))
-
       // account.get
       crushPics.account
         .get()
@@ -153,12 +140,6 @@ export default {
         .update({ compression_level_jpg: 70 })
         .then(res => console.log('app account update res:', res, '\n'))
         .catch(err => console.log('app account update err:', err))
-
-      // // exports.create
-      // crushPics.export
-      //   .create()
-      //     .then(res => console.log('app export.create res:', res ,'\n'))
-      //     .catch(err => console.log('app export.create err:', err))
 
       // exports.get
       crushPics.export
