@@ -40,12 +40,8 @@ Get information about your account and quota consumption report
 ```javascript
 var type = 'week'; # also supports 'month' & 'six_months'
 
-CrushPics.dashboard.get({ report_type: type }).request(function(error, result) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(result);
-  }
+CrushPics.dashboard.get({ report_type: type }).then(function(response) {
+  console.log(response);
 });
 ```
 
@@ -86,11 +82,146 @@ var renderChart = function(data) {
   chart.render();
 }
 
-CrushPics.dashboard.get({ report_type: 'week' }).request(function(error, result) {
-  if (error) {
-    console.log(error);
-  } else {
-    renderChart(result);
-  }
+CrushPics.dashboard.get({ report_type: 'week' }).then(function(response) {
+  renderChart(result.data);
 });
+```
+
+#### Async compression
+
+You can send you an image to compression by uploading actual blob or just providing a link to the file
+
+```javascript
+CrushPics.original_images
+  .create({
+    image_url: 'https://example.com/image.jpeg',
+    compression_type: 'balanced',
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+```javascript
+var file = input.files[0]
+
+CrushPics.original_images
+  .create({
+    file: file,
+    compression_type: 'balanced',
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Sync compression
+
+You can send you an image to compression by uploading actual blob or just providing a link to the file
+
+```javascript
+CrushPics.original_images
+  .compress({
+    image_url: 'https://example.com/image.jpeg',
+    compression_type: 'balanced',
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+```javascript
+var file = input.files[0]
+
+CrushPics.original_images
+  .compress({
+    file: file,
+    compression_type: 'balanced',
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### List uploaded images
+
+```javascript
+CrushPics.original_images
+  .list()
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Get details of uploaded image
+
+```javascript
+CrushPics.original_images
+  .get(11)
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Get account details
+
+```javascript
+CrushPics.account
+  .get()
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Update account details
+
+You can change your account details including default compression settings
+
+```javascript
+CrushPics.original_images
+  .update({
+    compression_level_jpg: 70,
+    compression_level_png: 70,
+    compression_level_gif: 70,
+    compression_type: 'balanced'
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### List Callback URLs
+
+```javascript
+CrushPics.callback_urls
+  .list()
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Create Callback URL
+
+You can change your account details including default compression settings
+
+```javascript
+CrushPics.callback_urls
+  .create({
+    url: 'https://example.com/webhook'
+  })
+  .then(function(response) {
+    console.log(response);
+  });
+```
+
+#### Delete Callback URL
+
+You can change your account details including default compression settings
+
+```javascript
+CrushPics.callback_urls
+  .delete(12)
+  .then(function(response) {
+    console.log(response);
+  });
 ```
