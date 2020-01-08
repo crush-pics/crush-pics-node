@@ -2,7 +2,6 @@ const axios = require('axios')
 const routes = require('./config/routes')
 const formData = require('./utils/formData')
 const validateIdParam = require('./utils/validateIdParam')
-const pick = require('./utils/pick')
 const crushPics = {}
 let config = {}
 
@@ -75,8 +74,6 @@ Object.keys(routes).forEach(el => {
       }
 
       return axios(updatedConfig)
-        .then(res => pick(res, ['status', 'data']))
-        .catch(err => err)
     }
   })
 })
