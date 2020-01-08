@@ -1,5 +1,5 @@
 const os = require('os')
-const clientVersion = 'v0.2.1'
+const clientVersion = 'v0.2.2'
 const baseUrl = 'https://api.crush.pics/v1'
 
 const serverConfig = {

@@ -1,4 +1,4 @@
-const clientVersion = 'v0.2.1'
+const clientVersion = 'v0.2.2'
 const baseUrl = 'https://api.crush.pics/v1'
 
 if (!window.navigator) throw new Error('cannot access to global object window in client side')
